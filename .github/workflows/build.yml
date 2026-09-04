@@ -24,13 +24,19 @@ jobs:
           channel: 'stable'
 
       - name: Install Dependencies
-        run: flutter pub get
+        run: |
+          if [ -d "block_puzzle" ]; then cd block_puzzle; fi
+          flutter pub get
 
       - name: Build APK
-        run: flutter build apk --release
+        run: |
+          if [ -d "block_puzzle" ]; then cd block_puzzle; fi
+          flutter build apk --release
 
       - name: Save APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: game-apk
-          path: build/app/outputs/flutter-apk/*.apk
+          path: |
+            build/app/outputs/flutter-apk/*.apk
+            **/build/app/outputs/flutter-apk/*.apk
