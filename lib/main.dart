@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
 
 void main() {
   runApp(const BlockPuzzleApp());
@@ -12,7 +11,7 @@ class BlockPuzzleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Block Puzzle Modern',
+      title: 'Block Puzzle Pro',
       theme: ThemeData.dark(),
       home: const GameScreen(),
     );
@@ -42,12 +41,10 @@ class _GameScreenState extends State<GameScreen> {
 
   int score = 0;
   int highScore = 0;
-  final AudioPlayer _audioPlayer = AudioPlayer();
 
-  // Daftar Balok Tren Berwarna-warni
   final List<GamePiece> _allPieces = [
     GamePiece(shape: [[1]], color: Colors.amber),
-    GamePiece(shape: [[1, 1], [1, 1]], color: Colors.blueAccent),
+    GamePiece(shape: [[1, 1], [1, 1]], color: Colors.cyanAccent),
     GamePiece(shape: [[1, 1, 1]], color: Colors.purpleAccent),
     GamePiece(shape: [[1], [1], [1]], color: Colors.greenAccent),
     GamePiece(shape: [[1, 1, 1], [0, 1, 0]], color: Colors.orangeAccent),
@@ -70,21 +67,6 @@ class _GameScreenState extends State<GameScreen> {
     ];
   }
 
-  // Efek Suara
-  void _playSound(String type) async {
-    // Memakai nada sintetis sederhana melalui AudioPlayer
-    try {
-      if (type == 'place') {
-        await _audioPlayer.play(UrlSource('https://actions.google.com/sounds/v1/cartoon/pop.ogg'));
-      } else if (type == 'clear') {
-        await _audioPlayer.play(UrlSource('https://actions.google.com/sounds/v1/touches/glass_ping.ogg'));
-      } else if (type == 'gameover') {
-        await _audioPlayer.play(UrlSource('https://actions.google.com/sounds/v1/human_voices/applause.ogg'));
-      }
-    } catch (_) {}
-  }
-
-  // Validasi Tabrakan (Anti-Overlap)
   bool _canPlacePiece(int row, int col, GamePiece piece) {
     for (int r = 0; r < piece.shape.length; r++) {
       for (int c = 0; c < piece.shape[r].length; c++) {
@@ -93,7 +75,7 @@ class _GameScreenState extends State<GameScreen> {
           int targetCol = col + c;
 
           if (targetRow >= gridSize || targetCol >= gridSize) return false;
-          if (grid[targetRow][targetCol] != null) return false; // Bertabrakan!
+          if (grid[targetRow][targetCol] != null) return false;
         }
       }
     }
@@ -114,7 +96,6 @@ class _GameScreenState extends State<GameScreen> {
 
       currentPieces[pieceIndex] = null;
       score += 15;
-      _playSound('place');
 
       _checkLines();
 
@@ -143,7 +124,6 @@ class _GameScreenState extends State<GameScreen> {
     }
 
     if (rowsToClear.isNotEmpty || colsToClear.isNotEmpty) {
-      _playSound('clear');
       setState(() {
         for (int r in rowsToClear) {
           for (int c = 0; c < gridSize; c++) {
@@ -177,21 +157,23 @@ class _GameScreenState extends State<GameScreen> {
     }
 
     if (!hasValidMove && currentPieces.any((p) => p != null)) {
-      _playSound('gameover');
       showDialog(
         context: context,
         barrierDismissible: false,
         builder: (_) => AlertDialog(
           backgroundColor: const Color(0xFF2D2D44),
-          title: const Text('GAME OVER 💥', textAlign: TextAlign.center),
-          content: Text('Skor Akhir Kamu: $score', textAlign: TextAlign.center),
+          title: const Text('GAME OVER 💥', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
+          content: Text('Skor Akhir Kamu: $score\nSkor Tertinggi: $highScore', textAlign: TextAlign.center),
           actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                _resetGame();
-              },
-              child: const Text('MAIN LAGI'),
+            Center(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+                onPressed: () {
+                  Navigator.pop(context);
+                  _resetGame();
+                },
+                child: const Text('MAIN LAGI', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+              ),
             )
           ],
         ),
@@ -212,7 +194,7 @@ class _GameScreenState extends State<GameScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF13131D),
       appBar: AppBar(
-        title: const Text('BLOCK PUZZLE PRO'),
+        title: const Text('BLOCK PUZZLE PRO', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: const Color(0xFF1E1E2C),
         elevation: 0,
@@ -220,7 +202,6 @@ class _GameScreenState extends State<GameScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          // Papan Skor
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -229,7 +210,6 @@ class _GameScreenState extends State<GameScreen> {
             ],
           ),
 
-          // Papan Game (Grid 8x8)
           Container(
             margin: const EdgeInsets.all(16),
             padding: const EdgeInsets.all(8),
@@ -280,7 +260,6 @@ class _GameScreenState extends State<GameScreen> {
             ),
           ),
 
-          // Pilihan Balok Tren
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(3, (i) {
