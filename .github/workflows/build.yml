@@ -23,6 +23,13 @@ jobs:
         with:
           channel: 'stable'
 
+      - name: Auto Generate Android Files
+        run: |
+          if [ -d "block_puzzle" ]; then cd block_puzzle; fi
+          if [ ! -d "android" ]; then
+            flutter create . --platforms=android
+          fi
+
       - name: Install Dependencies
         run: |
           if [ -d "block_puzzle" ]; then cd block_puzzle; fi
