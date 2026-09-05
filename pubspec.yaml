@@ -1,5 +1,5 @@
-name: block_puzzle
-description: A new Block Puzzle game project.
+name: shadow_fight_ultra
+description: "Shadow Fight Arena Ultra Game"
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  shared_preferences: ^2.2.2
   cupertino_icons: ^1.0.6
 
 dev_dependencies:
