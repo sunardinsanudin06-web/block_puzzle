@@ -67,7 +67,7 @@ class _InitialCheckScreenState extends State<InitialCheckScreen> {
   }
 }
 
-// 1. SKRIN PENDAFTARAN & NAMA ACAK & BAHASA
+// 1. REGISTRATION SCREEN
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
 
@@ -180,7 +180,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 }
 
-// 2. LOBI UTAMA (FF STYLE)
+// 2. FREE FIRE LOBBY SCREEN
 class FreeFireLobbyScreen extends StatefulWidget {
   const FreeFireLobbyScreen({super.key});
 
@@ -192,13 +192,11 @@ class _FreeFireLobbyScreenState extends State<FreeFireLobbyScreen> {
   String _playerName = "SAMURAI MASTER";
   int _gems = 5000;
   int _coins = 25000;
-  
-  // Settings Grafis FF Style
+
   String _graphicsQuality = "HD ULTRA";
   bool _highFps = true;
   bool _bgmEnabled = true;
 
-  // Selected Assets / Vault State
   Color _outfitColor = Colors.cyanAccent;
   String _outfitName = "Kostum Cyber Ninja";
 
@@ -208,7 +206,6 @@ class _FreeFireLobbyScreenState extends State<FreeFireLobbyScreen> {
 
   String _fatalitySkill = "Dragon Flame Execution";
 
-  // Data Vault
   final List<Map<String, dynamic>> _outfits = [
     {"name": "Kostum Cyber Ninja", "color": Colors.cyanAccent, "owned": true},
     {"name": "Baju Red Crimson", "color": Colors.redAccent, "owned": true},
@@ -262,14 +259,14 @@ class _FreeFireLobbyScreenState extends State<FreeFireLobbyScreen> {
               children: [
                 Icon(Icons.settings, color: Colors.amber),
                 SizedBox(width: 8),
-                Text("PENGATURAN GRAFIK & SUARA", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("PENGATURAN GRAFIK", style: TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
             content: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("KUALITAS GRAFIK (Garena FF Style):", style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 12)),
+                  const Text("KUALITAS GRAFIK:", style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 12)),
                   const SizedBox(height: 8),
                   Wrap(
                     spacing: 8,
@@ -338,7 +335,6 @@ class _FreeFireLobbyScreenState extends State<FreeFireLobbyScreen> {
               Expanded(
                 child: TabBarView(
                   children: [
-                    // Tab Baju
                     ListView.builder(
                       itemCount: _outfits.length,
                       itemBuilder: (ctx, i) {
@@ -377,7 +373,6 @@ class _FreeFireLobbyScreenState extends State<FreeFireLobbyScreen> {
                         );
                       },
                     ),
-                    // Tab Pedang
                     ListView.builder(
                       itemCount: _weapons.length,
                       itemBuilder: (ctx, i) {
@@ -418,7 +413,6 @@ class _FreeFireLobbyScreenState extends State<FreeFireLobbyScreen> {
                         );
                       },
                     ),
-                    // Tab Fatality
                     ListView.builder(
                       itemCount: _fatalities.length,
                       itemBuilder: (ctx, i) {
@@ -472,6 +466,7 @@ class _FreeFireLobbyScreenState extends State<FreeFireLobbyScreen> {
       builder: (context) => Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             const Text("TOKO DIAMOND / GEM", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.cyan)),
             const SizedBox(height: 16),
@@ -504,7 +499,6 @@ class _FreeFireLobbyScreenState extends State<FreeFireLobbyScreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            // Background Grafik
             Container(
               decoration: const BoxDecoration(
                 gradient: RadialGradient(
@@ -513,8 +507,6 @@ class _FreeFireLobbyScreenState extends State<FreeFireLobbyScreen> {
                 ),
               ),
             ),
-
-            // Podium & Character Rendering
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -528,7 +520,7 @@ class _FreeFireLobbyScreenState extends State<FreeFireLobbyScreen> {
                         margin: const EdgeInsets.only(top: 140),
                         decoration: BoxDecoration(
                           color: _outfitColor.withOpacity(0.3),
-                          borderRadius: const BorderRadius.all(Radius.elliptical(90, 18)),
+                          borderRadius: BorderRadius.circular(90),
                           boxShadow: [BoxShadow(color: _outfitColor, blurRadius: 20)],
                         ),
                       ),
@@ -545,8 +537,6 @@ class _FreeFireLobbyScreenState extends State<FreeFireLobbyScreen> {
                 ],
               ),
             ),
-
-            // Top Status Bar
             Positioned(
               top: 12,
               left: 16,
@@ -579,8 +569,6 @@ class _FreeFireLobbyScreenState extends State<FreeFireLobbyScreen> {
                 ],
               ),
             ),
-
-            // Menu Kiri (FF Style)
             Positioned(
               left: 16,
               top: 70,
@@ -592,8 +580,6 @@ class _FreeFireLobbyScreenState extends State<FreeFireLobbyScreen> {
                 ],
               ),
             ),
-
-            // Tombol MULAI Pertarungan (FF Style)
             Positioned(
               bottom: 20,
               right: 20,
@@ -671,7 +657,7 @@ class _FreeFireLobbyScreenState extends State<FreeFireLobbyScreen> {
   }
 }
 
-// 3. WIDGET VISUAL KARAKTER MANUSIA
+// 3. HUMAN CHARACTER WIDGET
 class HumanCharacterWidget extends StatelessWidget {
   final Color color;
   final Color weaponColor;
@@ -742,7 +728,7 @@ class HumanCharacterWidget extends StatelessWidget {
   }
 }
 
-// 4. ARENA PERTARUNGAN
+// 4. BATTLE ARENA SCREEN
 class BattleArenaScreen extends StatefulWidget {
   final String playerName;
   final Color outfitColor;
@@ -833,9 +819,9 @@ class _BattleArenaScreenState extends State<BattleArenaScreen> {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
-                      children: const [
-                        Text("SHADOW SHOGUN (PRO AI)", style: TextStyle(color: Colors.purpleAccent, fontWeight: FontWeight.bold)),
-                        LinearProgressIndicator(value: 120 / 130, color: Colors.purpleAccent, minHeight: 8),
+                      children: [
+                        const Text("SHADOW SHOGUN (PRO AI)", style: TextStyle(color: Colors.purpleAccent, fontWeight: FontWeight.bold)),
+                        LinearProgressIndicator(value: _enemyHp / 130, color: Colors.purpleAccent, minHeight: 8),
                       ],
                     ),
                   ),
